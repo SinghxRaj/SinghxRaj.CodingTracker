@@ -12,11 +12,11 @@ internal class DatabaseManager
 
     public static void CreateTable()
     {
-        string createTable = @"CREATE TABLE IF NOT EXISTS CODING_TRACKER(
-                                      Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                      Start TEXT,
-                                      End TEXT,
-                                      Duration INTEGER
+        string createTable = @"CREATE TABLE IF NOT EXISTS Coding_Tracker(
+                                      id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                      start TEXT,
+                                      end TEXT,
+                                      duration INTEGER
                                      )";
 
         using var connection = new SqliteConnection(ConnectionString);
@@ -35,7 +35,7 @@ internal class DatabaseManager
         string end = session.EndTime.ToString(TimeFormat.SessionTimeStampFormat);
         int durationInMinutes = (int)session.Duration.TotalMinutes;
 
-        string newSession = @$"INSERT INTO CODING_TRACKER (Start, End, Duration)
+        string newSession = @$"INSERT INTO Coding_Tracker (start, end, duration)
                                   VALUES ('{start}', '{end}', {durationInMinutes})";
 
         using var connection = new SqliteConnection(ConnectionString);
@@ -48,7 +48,7 @@ internal class DatabaseManager
 
     public static List<CodingSession> GetCodingSessions()
     {
-        string getSessions = @"SELECT * FROM CODING_TRACKER";
+        string getSessions = @"SELECT * FROM Coding_Tracker";
         var sessions = new List<CodingSession>();
 
         using var connection = new SqliteConnection(ConnectionString);
@@ -82,7 +82,7 @@ internal class DatabaseManager
 
     internal static bool DeleteCodingSession(int codingSessionId)
     {
-        string deleteSession = @$"DELETE FROM CODING_TRACKER WHERE Id={codingSessionId}";
+        string deleteSession = @$"DELETE FROM Coding_Tracker WHERE id={codingSessionId}";
 
         using var connection = new SqliteConnection(ConnectionString);
         connection.Open();
@@ -100,9 +100,9 @@ internal class DatabaseManager
         string end = session.EndTime.ToString(TimeFormat.SessionTimeStampFormat);
         int durationInMinutes = (int)session.Duration.TotalMinutes;
 
-        string updateSession = @$"UPDATE CODING_TRACKER
-                                  SET Start='{start}', End='{end}', Duration={durationInMinutes}
-                                  WHERE Id={session.Id}";
+        string updateSession = @$"UPDATE Coding_Tracker
+                                  SET start='{start}', end='{end}', duration={durationInMinutes}
+                                  WHERE id={session.Id}";
 
         using var connection = new SqliteConnection(ConnectionString);
         connection.Open();
@@ -116,8 +116,8 @@ internal class DatabaseManager
 
     internal static CodingSession GetCodingSession(int sessionId)
     {
-        string getSessions = @$"SELECT * FROM CODING_TRACKER
-                               WHERE Id = {sessionId}";
+        string getSessions = @$"SELECT * FROM Coding_Tracker
+                               WHERE id = {sessionId}";
 
         using var connection = new SqliteConnection(ConnectionString);
         connection.Open();
